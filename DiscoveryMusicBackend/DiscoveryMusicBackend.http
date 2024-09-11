@@ -1,0 +1,6 @@
+@DiscoveryMusicBackend_HostAddress = http://localhost:5208
+
+GET {{DiscoveryMusicBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

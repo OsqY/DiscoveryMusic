@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "KvoUAdMYCZC+qi9hfKe3Y1e5Qkg5HpR797V7FRiAH38=",
+  "Source": "DiscoveryMusicBackend",
+  "BasePath": "_content/DiscoveryMusicBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
