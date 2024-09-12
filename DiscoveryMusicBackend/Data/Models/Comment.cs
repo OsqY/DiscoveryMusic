@@ -1,6 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiscoveryMusic.Data.Models;
 
@@ -16,6 +17,7 @@ public class Comment
 
   [ForeignKey(nameof(ApiUser))]
   public required string UserId { get; set; }
+  [DeleteBehavior(DeleteBehavior.Cascade)]
   public ApiUser? User { get; set; }
 
   [ForeignKey(nameof(Album))]

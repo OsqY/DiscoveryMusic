@@ -1,6 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiscoveryMusic.Data.Models;
 
@@ -18,6 +19,7 @@ public class Album
 
   [ForeignKey(nameof(Artist))]
   public int ArtistId { get; set; }
+  [DeleteBehavior(DeleteBehavior.Cascade)]
   public Artist? Artist { get; set; }
 
   public ICollection<Song> Songs { get; set; } = new List<Song>();

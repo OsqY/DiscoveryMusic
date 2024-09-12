@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using DiscoveryMusic.Data.Database;
 using DiscoveryMusic.Data.Models;
 using DiscoveryMusic.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DiscoveryMusic.Controllers;
 
@@ -28,12 +29,10 @@ public class AlbumController : ControllerBase
   {
     var album = await _context.Albums.FindAsync(id);
 
-    if (album == null)
-      return NotFound();
-
-    return album;
+    return album != null ? album : NotFound();
   }
 
+  [Authorize(Roles = "Administrator")]
   [HttpPost]
   public async Task<ActionResult<Album>> Post(AlbumDTO model)
   {
@@ -43,38 +42,41 @@ public class AlbumController : ControllerBase
     ICollection<SongDTO> songsInModel = model.Songs;
     ICollection<Song> songs = new List<Song>();
 
-    foreach (SongDTO song in songsInModel)
-    {
-      Song actualSong = new Song
-      {
-        Name = song.Name,
-        ReleasedDate = song.ReleaseDate,
-        AlbumId = song.AlbumId,
-        ArtistId = song.ArtistId,
-        CreatedDate = DateTime.Now,
-        LastModifiedDate = DateTime.Now
-      };
-      songs.Add(actualSong);
-      await _context.Songs.AddAsync(actualSong);
 
-    }
 
     var album = new Album
     {
       Name = model.Name,
       ReleaseDate = model.ReleaseDate,
       ArtistId = model.ArtistId,
-      Songs = songs,
       CreatedDate = DateTime.Now,
       LastModifiedDate = DateTime.Now
     };
 
-    await _context.Albums.AddAsync(album);
+    await _context.AddAsync(album);
+
+    Console.WriteLine(album.Id);
+    foreach (SongDTO song in songsInModel)
+    {
+      Song actualSong = new Song
+      {
+        Name = song.Name,
+        ReleasedDate = song.ReleaseDate,
+        AlbumId = album.Id,
+        CreatedDate = DateTime.Now,
+        LastModifiedDate = DateTime.Now
+      };
+      songs.Add(actualSong);
+      await _context.AddAsync(actualSong);
+    }
+
+    album.Songs = songs;
     await _context.SaveChangesAsync();
 
     return StatusCode(201, album);
   }
 
+  [Authorize(Roles = "Administrator")]
   [HttpPut("{id}")]
   public async Task<ActionResult> UpdateAlbum(int id, [FromBody] AlbumDTO model)
   {
@@ -94,10 +96,11 @@ public class AlbumController : ControllerBase
 
     await _context.SaveChangesAsync();
 
-    return Ok($"Album with {id} was updated.");
+    return Ok($"Album with id: {id} was updated.");
 
   }
 
+  [Authorize(Roles = "Administrator")]
   [HttpDelete("{id}")]
   public async Task<ActionResult> DeleteAlbum(int id)
   {
@@ -106,9 +109,9 @@ public class AlbumController : ControllerBase
     if (album == null)
       return NotFound();
 
-    _context.Albums.Remove(album);
+    _context.Remove(album);
     await _context.SaveChangesAsync();
 
-    return Ok($"Album with {id} removed");
+    return Ok($"Album with id: {id} removed");
   }
 }

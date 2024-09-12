@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/oscar/Desktop/DiscoveryMusic/DiscoveryMusicBackend/DiscoveryMusicBackend.csproj": {}
+    "/home/oscar/Escritorio/DiscoveryMusic/DiscoveryMusicBackend/DiscoveryMusicBackend.csproj": {}
   },
   "projects": {
-    "/home/oscar/Desktop/DiscoveryMusic/DiscoveryMusicBackend/DiscoveryMusicBackend.csproj": {
+    "/home/oscar/Escritorio/DiscoveryMusic/DiscoveryMusicBackend/DiscoveryMusicBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/oscar/Desktop/DiscoveryMusic/DiscoveryMusicBackend/DiscoveryMusicBackend.csproj",
+        "projectUniqueName": "/home/oscar/Escritorio/DiscoveryMusic/DiscoveryMusicBackend/DiscoveryMusicBackend.csproj",
         "projectName": "DiscoveryMusicBackend",
-        "projectPath": "/home/oscar/Desktop/DiscoveryMusic/DiscoveryMusicBackend/DiscoveryMusicBackend.csproj",
+        "projectPath": "/home/oscar/Escritorio/DiscoveryMusic/DiscoveryMusicBackend/DiscoveryMusicBackend.csproj",
         "packagesPath": "/home/oscar/.nuget/packages/",
-        "outputPath": "/home/oscar/Desktop/DiscoveryMusic/DiscoveryMusicBackend/obj/",
+        "outputPath": "/home/oscar/Escritorio/DiscoveryMusic/DiscoveryMusicBackend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/oscar/.nuget/NuGet/NuGet.Config"
@@ -32,12 +32,21 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Aspire.Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.2.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.8, )"
@@ -60,10 +69,6 @@
               "target": "Package",
               "version": "[8.0.8, )"
             },
-            "Pomelo.EntityFrameworkCore.MySql": {
-              "target": "Package",
-              "version": "[8.0.2, )"
-            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
@@ -84,12 +89,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.5, 8.0.5]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -98,7 +97,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.105/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/oscar/.dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
