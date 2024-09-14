@@ -25,7 +25,7 @@ public class CommentController : ControllerBase
   }
 
   [HttpGet]
-  public async Task<ActionResult<ApiResultDTO<Comment>>> GetComments(PaginationDTO paginationDTO)
+  public async Task<ActionResult<ApiResultDTO<Comment>>> GetComments([FromQuery] PaginationDTO paginationDTO)
   {
     return await ApiResultDTO<Comment>.CreateAsync(_context.Comments.AsNoTracking(), paginationDTO);
   }

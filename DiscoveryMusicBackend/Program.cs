@@ -16,6 +16,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(opts =>
 builder.Services.AddControllers()
   .AddJsonOptions(opts => opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
+builder.Services.AddCors(opts =>
+{
+  opts.AddDefaultPolicy(cfg =>
+  {
+    cfg.AllowAnyHeader();
+    cfg.AllowAnyOrigin();
+    cfg.AllowAnyMethod();
+  });
+});
+
 builder.Services.AddAuthentication(opts =>
 {
   opts.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
@@ -70,6 +80,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 app.MapIdentityApi<ApiUser>();
 
 app.UseRouting();

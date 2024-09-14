@@ -37,7 +37,7 @@ public class ApiResultDTO<T>
       source = source.OrderBy(string.Format("{0} {1}", pagination.SortColumn, pagination.SortOrder));
     }
 
-    source = source.Skip(pagination.PageSize * pagination.PageIndex).Take(pagination.PageSize);
+    source = source.Skip(pagination.PageIndex * pagination.PageSize).Take(pagination.PageSize);
 
     var data = await source.ToListAsync();
 
@@ -78,9 +78,9 @@ public class ApiResultDTO<T>
     }
   }
 
-  public  string? SortColumn { get; set; }
-  public  string? SortOrder { get; set; }
-  public  string? FilterColumn { get; set; }
-  public  string? FilterQuery { get; set; }
+  public string? SortColumn { get; set; }
+  public string? SortOrder { get; set; }
+  public string? FilterColumn { get; set; }
+  public string? FilterQuery { get; set; }
 }
 

@@ -21,7 +21,7 @@ public class ArtistController : ControllerBase
   }
 
   [HttpGet]
-  public async Task<ActionResult<ApiResultDTO<Artist>>> GetArtists(PaginationDTO paginationDTO)
+  public async Task<ActionResult<ApiResultDTO<Artist>>> GetArtists([FromQuery] PaginationDTO paginationDTO)
   {
     return await ApiResultDTO<Artist>.CreateAsync(_context.Artists.AsNoTracking(), paginationDTO);
   }
