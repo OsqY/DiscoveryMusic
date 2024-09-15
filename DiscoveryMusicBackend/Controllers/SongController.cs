@@ -1,4 +1,3 @@
-
 using DiscoveryMusic.Data.Database;
 using DiscoveryMusic.Data.Models;
 using DiscoveryMusic.DTO;
@@ -8,89 +7,90 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DiscoveryMusic.Controllers;
 
-
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class SongController : ControllerBase
 {
-  private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-  public SongController(ApplicationDbContext context)
-  {
-    _context = context;
-  }
-
-  [HttpGet]
-  public async Task<ActionResult<ApiResultDTO<Song>>> GetSongs([FromQuery] PaginationDTO pagination)
-  {
-    return await ApiResultDTO<Song>.CreateAsync(_context.Songs.AsNoTracking(), pagination);
-  }
-
-  [HttpGet("{id}")]
-  public async Task<ActionResult<Song>> GetSong(int id)
-  {
-    var song = await _context.Songs.FindAsync(id);
-
-    return song != null ? song : NotFound();
-  }
-
-  [Authorize(Roles = "Administrator")]
-  [HttpPost]
-  public async Task<ActionResult<Song>> Post(SongDTO model)
-  {
-    if (!ModelState.IsValid)
-      return BadRequest();
-
-
-    var song = new Song
+    public SongController(ApplicationDbContext context)
     {
-      Name = model.Name,
-      AlbumId = model.AlbumId,
-      CreatedDate = DateTime.Now,
-      LastModifiedDate = DateTime.Now
-    };
+        _context = context;
+    }
 
-    await _context.AddAsync(song);
-    await _context.SaveChangesAsync();
+    [HttpGet]
+    public async Task<ActionResult<ApiResultDTO<Song>>> GetSongs(
+        [FromQuery] PaginationDTO pagination
+    )
+    {
+        return await ApiResultDTO<Song>.CreateAsync(_context.Songs.AsNoTracking(), pagination);
+    }
 
-    return StatusCode(201, song);
-  }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Song>> GetSong(int id)
+    {
+        var song = await _context.Songs.FindAsync(id);
 
-  [Authorize(Roles = "Administrator")]
-  [HttpPut("{id}")]
-  public async Task<ActionResult> UpdateSong(int id, [FromBody] SongDTO model)
-  {
+        return song != null ? song : NotFound();
+    }
 
-    if (!ModelState.IsValid)
-      return BadRequest();
+    [Authorize(Roles = "Administrator")]
+    [HttpPost]
+    public async Task<ActionResult<Song>> Post(SongDTO model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest();
 
-    var song = await _context.Songs.FindAsync(id);
+        var song = new Song
+        {
+            Name = model.Name,
+            AlbumId = model.AlbumId,
+            CreatedDate = DateTime.Now,
+            LastModifiedDate = DateTime.Now,
+        };
 
-    if (song == null)
-      return NotFound();
+        await _context.AddAsync(song);
+        await _context.SaveChangesAsync();
 
-    song.Name = model.Name;
-    song.LastModifiedDate = DateTime.Now;
-    song.AlbumId = model.AlbumId;
+        return StatusCode(
+            201,
+            $"Added song from album with id: {model.AlbumId} with the name of {model.Name} and release date of {model.ReleaseDate}"
+        );
+    }
 
-    await _context.SaveChangesAsync();
+    [Authorize(Roles = "Administrator")]
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateSong(int id, [FromBody] SongDTO model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest();
 
-    return Ok($"Song with id: {id} was updated.");
+        var song = await _context.Songs.FindAsync(id);
 
-  }
+        if (song == null)
+            return NotFound();
 
-  [Authorize(Roles = "Administrator")]
-  [HttpDelete("{id}")]
-  public async Task<ActionResult> DeleteSong(int id)
-  {
-    var song = await _context.Songs.FindAsync(id);
+        song.Name = model.Name;
+        song.LastModifiedDate = DateTime.Now;
+        song.AlbumId = model.AlbumId;
 
-    if (song == null)
-      return NotFound();
+        await _context.SaveChangesAsync();
 
-    _context.Remove(song);
-    await _context.SaveChangesAsync();
+        return Ok($"Song with id: {id} was updated.");
+    }
 
-    return Ok($"Song with id: {id} removed");
-  }
+    [Authorize(Roles = "Administrator")]
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteSong(int id)
+    {
+        var song = await _context.Songs.FindAsync(id);
+
+        if (song == null)
+            return NotFound();
+
+        _context.Remove(song);
+        await _context.SaveChangesAsync();
+
+        return Ok($"Song with id: {id} removed");
+    }
 }
