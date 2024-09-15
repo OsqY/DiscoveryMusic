@@ -27,7 +27,7 @@ public class AlbumController : ControllerBase
   [HttpGet("{id}")]
   public async Task<ActionResult<Album>> GetAlbum(int id)
   {
-    var album = await _context.Albums.FindAsync(id);
+    var album = await _context.Albums.Include(a => a.Artist).FirstOrDefaultAsync(a => a.Id==id);
 
     return album != null ? album : NotFound();
   }

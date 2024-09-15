@@ -2,7 +2,7 @@ import { createRequire } from 'module';const require = createRequire(import.meta
 import {
   DOCUMENT,
   isPlatformBrowser
-} from "./chunk-4WNSVE3P.js";
+} from "./chunk-XKMCCLCQ.js";
 import {
   Inject,
   Injectable,

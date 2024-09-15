@@ -9,11 +9,43 @@
     <!--   /> -->
     <!-- </figure> -->
     <div class="card-body">
-      <h2 class="card-title">{{ album.name }}</h2>
-      <p>{{ album.releaseDate }}</p>
+      <h2 class="card-title" >
+      <a [routerLink]="'/album/' + album.id">{{album.name}} </a>
+      </h2>
+      <p>{{ album.releaseDate.replace("T00:00:00", "") }}</p>
       <div class="card-actions justify-end">
         <button class="btn btn-primary">Rate this album!</button>
       </div>
     </div>
   </div>
 }
+
+<div class="join">
+  <button
+    class="join-item btn btn-square"
+    [disabled]="currentPage === 0"
+    (click)="goToPage(currentPage - 1)"
+  >
+    &laquo;
+  </button>
+
+  <ng-container *ngFor="let page of pagesToShow">
+    <input
+      *ngIf="page !== -1"
+      class="join-item btn btn-square"
+      type="radio"
+      [name]="'page_' + page"
+      [ariaLabel]="currentPage === page"
+      (click)="goToPage(page)"
+    />
+    <span *ngIf="page === -1" class="join-iten btn">...</span>
+  </ng-container>
+
+  <button
+    class="join-item btn btn-square"
+    [disabled]="currentPage === albumsResponse.totalPages"
+    (click)="goToPage(currentPage + 1)"
+  >
+    &raquo;
+  </button>
+</div>
