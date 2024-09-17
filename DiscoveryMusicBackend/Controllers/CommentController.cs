@@ -35,13 +35,17 @@ public class CommentController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Comment>> GetComment(int id)
     {
-        var comment = await _context.Comments.Where(c => c.Id ==id)
-          .Select(c => new CommentDTO {
-              Id = c.Id,
-              AlbumId=c.AlbumId,Content=c.Content,
-              Username= c.User.UserName,
-              UserId=c.UserId
-              }).FirstOrDefaultAsync();
+        var comment = await _context
+            .Comments.Where(c => c.Id == id)
+            .Select(c => new CommentDTO
+            {
+                Id = c.Id,
+                AlbumId = c.AlbumId,
+                Content = c.Content,
+                Username = c.User.UserName,
+                UserId = c.UserId,
+            })
+            .FirstOrDefaultAsync();
 
         return comment != null ? Ok(comment) : NotFound();
     }

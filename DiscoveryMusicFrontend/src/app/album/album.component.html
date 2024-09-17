@@ -1,18 +1,35 @@
-<div class="card bg-base-100 w-96 shadow-xl">
-  <!--<figure>-->
-  <!--  <img-->
-  <!--    src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"-->
-  <!--    alt="Shoes" />-->
-  <!--</figure>-->
-  <h1>{{result.name}} </h1>
-  <div class="card-body">
-    <h2 class="card-title">
-      {{result.artist.name}}
-      <!--<div class="badge badge-secondary">NEW</div>-->
-    </h2>
-    <p>If a dog chews shoes whose shoes does he choose?</p>
-    <div class="card-actions justify-end">
-      <div class="badge badge-outline">{{result.releaseDate.replace("T00:00:00", "") }}</div>
+<div class="container mx-auto px-4 py-8">
+  <div class="flex flex-col items-center">
+    <div class="card bg-base-300 w-full max-w-3xl shadow-xl p-6 mb-8">
+      <h1 class="text-3xl sm:text-4xl font-bold text-center mb-4">
+        {{ result.album.name }}
+      </h1>
+      <div class="card-body p-0">
+        <h2 class="card-title text-2xl sm:text-3xl justify-center mb-2">
+          {{ result.artist.name }}
+        </h2>
+        <p class="text-center mb-4 text-lg">
+          If a dog chews shoes whose shoes does he choose?
+        </p>
+        <div class="card-actions justify-center">
+          <div class="badge badge-outline text-lg p-4">
+            {{ result.album.releaseDate.replace("T00:00:00", "") }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-comment-form class="w-full max-w-3xl"></app-comment-form>
+
+    <div class="w-full max-w-3xl space-y-4 mt-8">
+      @for (comment of result.comments.$values; track comment) {
+        <div class="card bg-base-200 shadow-xl">
+          <div class="card-body">
+            <h3 class="text-xl font-bold">{{ comment.username }}</h3>
+            <p class="text-lg">{{ comment.content }}</p>
+          </div>
+        </div>
+      }
     </div>
   </div>
 </div>

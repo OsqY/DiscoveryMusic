@@ -1,44 +1,38 @@
 export interface AlbumResponse {
-  $id: string
-  id: number
-  name: string
-  releaseDate: string
-  imageUrl: any
-  artistId: number
-  artist: Artist
-  songs: Songs2
-  createdDate: string
-  lastModifiedDate: string
+  $id: string;
+  album: Album;
+  artist: Artist;
+  comments: Comments;
+}
+
+export interface Album {
+  $id: string;
+  id: number;
+  name: string;
+  releaseDate: string;
+  artistId: number;
+  songs: any;
 }
 
 export interface Artist {
-  $id: string
-  id: number
-  name: string
-  debut: string
-  imageUrl: any
-  createdDate: string
-  lastModifiedDate: string
-  albums: Albums
-  songs: Songs
+  $id: string;
+  name: string;
+  debut: string;
+  artistId: number;
+  albums: any;
 }
 
-export interface Albums {
-  $id: string
-  $values: Value[]
+export interface Comments {
+  $id: string;
+  $values: Value[];
 }
 
 export interface Value {
-  $ref: string
+  $id: string;
+  id: number;
+  content: string;
+  rating: number;
+  albumId: number;
+  username: string;
+  userId: string;
 }
-
-export interface Songs {
-  $id: string
-  $values: any[]
-}
-
-export interface Songs2 {
-  $id: string
-  $values: any[]
-}
-

@@ -2,7 +2,7 @@ import { createRequire } from 'module';const require = createRequire(import.meta
 import {
   DOCUMENT,
   isPlatformBrowser
-} from "./chunk-XKMCCLCQ.js";
+} from "./chunk-M26M6KQO.js";
 import {
   Inject,
   Injectable,
@@ -10,7 +10,8 @@ import {
   setClassMetadata,
   ɵɵdefineInjectable,
   ɵɵinject
-} from "./chunk-GPPHCCFQ.js";
+} from "./chunk-DH64UGMO.js";
+import "./chunk-VDZEJD3D.js";
 import "./chunk-NQ4HTGF6.js";
 
 // node_modules/ngx-cookie-service/fesm2022/ngx-cookie-service.mjs

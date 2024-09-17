@@ -32,13 +32,20 @@ public class ArtistController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Artist>> GetArtist(int id)
     {
-      var artist = await _context.Artists.Where(a => a.Id==id)
-        .Select(a => new ArtistDTO {
-            ArtistId=a.Id,
-            Name=a.Name,
-            Albums = a.Albums.Select(a => 
-                new AlbumDTO {Name=a.Name, Id=a.Id, ReleaseDate = a.ReleaseDate})
-            }).FirstOrDefaultAsync();
+        var artist = await _context
+            .Artists.Where(a => a.Id == id)
+            .Select(a => new ArtistDTO
+            {
+                ArtistId = a.Id,
+                Name = a.Name,
+                Albums = a.Albums.Select(a => new AlbumDTO
+                {
+                    Name = a.Name,
+                    Id = a.Id,
+                    ReleaseDate = a.ReleaseDate,
+                }),
+            })
+            .FirstOrDefaultAsync();
 
         return artist != null ? Ok(artist) : NotFound();
     }

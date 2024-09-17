@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { User } from './User';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SharedModule } from '../../shared-module';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
+  imports: [SharedModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })

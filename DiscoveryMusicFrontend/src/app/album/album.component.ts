@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { AlbumResponse } from './AlbumResponse';
 import { environment } from '../../environments/environment.development';
 import { ActivatedRoute } from '@angular/router';
+import { CommentFormComponent } from '../comment-form/comment-form.component';
 
 @Component({
   selector: 'app-album',
   standalone: true,
-  imports: [],
+  imports: [CommentFormComponent],
   templateUrl: './album.component.html',
   styleUrl: './album.component.scss',
 })

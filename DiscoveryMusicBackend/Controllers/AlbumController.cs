@@ -31,15 +31,27 @@ public class AlbumController : ControllerBase
     {
         var album = await _context
             .Albums.Where(a => a.Id == id)
-            .Select(a => new 
+            .Select(a => new
             {
                 Album = new AlbumDTO
                 {
-                Name=a.Name,ArtistId=a.ArtistId,ReleaseDate=a.ReleaseDate
+                    Name = a.Name,
+                    ArtistId = a.ArtistId,
+                    ReleaseDate = a.ReleaseDate,
                 },
-                Artist = new ArtistDTO{Name=a.Artist.Name,ArtistId=a.ArtistId,Debut=a.Artist.Debut},
+                Artist = new ArtistDTO
+                {
+                    Name = a.Artist.Name,
+                    ArtistId = a.ArtistId,
+                    Debut = a.Artist.Debut,
+                },
                 Comments = a
-                    .Comments.Select(c => new CommentDTO { UserId= c.UserId, Username=c.User.UserName, Content=c.Content } )
+                    .Comments.Select(c => new CommentDTO
+                    {
+                        UserId = c.UserId,
+                        Username = c.User.UserName,
+                        Content = c.Content,
+                    })
                     .ToList(),
             })
             .AsSplitQuery()

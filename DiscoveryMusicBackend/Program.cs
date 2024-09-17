@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
 using DiscoveryMusic.Data.Database;
 using DiscoveryMusic.Data.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,13 +32,20 @@ builder.Services.AddCors(opts =>
 });
 
 builder
-    .Services.AddAuthentication(opts =>
-    {
-        opts.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-    })
-    .AddCookie(IdentityConstants.ApplicationScheme);
+    .Services.AddAuthentication(IdentityConstants.ApplicationScheme)
+    .AddIdentityCookies()
+    .ApplicationCookie!.Configure(opt =>
+        opt.Events = new CookieAuthenticationEvents()
+        {
+            OnRedirectToLogin = ctx =>
+            {
+                ctx.Response.StatusCode = 401;
+                return Task.CompletedTask;
+            },
+        }
+    );
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationBuilder();
 
 builder
     .Services.AddIdentityCore<ApiUser>(opts => opts.SignIn.RequireConfirmedAccount = true)
@@ -94,5 +103,18 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapPost(
+        "/logout",
+        async (SignInManager<ApiUser> signInManager, [FromBody] object empty) =>
+        {
+            if (empty is not null)
+            {
+                await signInManager.SignOutAsync();
+                return Results.Ok();
+            }
+            return Results.NotFound();
+        }
+    )
+    .RequireAuthorization();
 
 app.Run();

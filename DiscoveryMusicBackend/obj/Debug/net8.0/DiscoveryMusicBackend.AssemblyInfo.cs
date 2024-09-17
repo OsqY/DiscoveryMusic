@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DiscoveryMusicBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b2e02b86c31579dafde0f337236828101f3bfd0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+673f1c456e619fe95c235208cc608cd84a33c8de")]
 [assembly: System.Reflection.AssemblyProductAttribute("DiscoveryMusicBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DiscoveryMusicBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
