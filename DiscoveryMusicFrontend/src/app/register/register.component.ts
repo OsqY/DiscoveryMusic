@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { User } from './User';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { SharedModule } from '../../shared-module';
+import { AuthService } from '../identity/service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -17,19 +16,23 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
   repeatPassword: string = '';
-  formIsInvalid: boolean = true;
-  isRegistrationValid: boolean = false;
-  user: User = new User();
-  router: Router = new Router();
+  authFailed: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   sendUserData() {
-    this.user.email = this.email;
-    this.user.password = this.password;
-    this.http.post<any>(this.url + '/register', this.user).subscribe((res) => {
-      this.isRegistrationValid = true;
-      this.router.navigate(['login']).catch((error) => console.error(error));
-    });
+    this.authService
+      .register(this.email, this.password)
+      .forEach((response) => {
+        if (response) {
+          this.router.navigateByUrl('login');
+        }
+      })
+      .catch((_) => {
+        this.authFailed = true;
+      });
   }
 }

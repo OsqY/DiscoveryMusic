@@ -22,6 +22,15 @@
     <app-comment-form class="w-full max-w-3xl"></app-comment-form>
 
     <div class="w-full max-w-3xl space-y-4 mt-8">
+      @if (userComment && isSignedIn) {
+        <div class="card bg-base-300 shadow-xl">
+          <div class="card-body">
+            <h3 class="text-xl font-bold">{{ userComment.username }}</h3>
+            <p class="text-lg">{{ userComment.content }}</p>
+          </div>
+        </div>
+      }
+
       @for (comment of result.comments.$values; track comment) {
         <div class="card bg-base-200 shadow-xl">
           <div class="card-body">

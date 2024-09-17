@@ -24,10 +24,20 @@ export interface Artist {
 
 export interface Comments {
   $id: string;
-  $values: Value[];
+  $values: Comment[];
 }
 
-export interface Value {
+export interface Comment {
+  $id: string;
+  id: number;
+  content: string;
+  rating: number;
+  albumId: number;
+  username: string;
+  userId: string;
+}
+
+export interface UserComment {
   $id: string;
   id: number;
   content: string;

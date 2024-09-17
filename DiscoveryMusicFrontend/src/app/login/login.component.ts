@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment.development';
-import { User } from '../register/User';
 import { AuthService } from '../identity/service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -17,9 +16,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   repeatPassword: string = '';
-  formIsInvalid: boolean = true;
-  isRegistrationValid: boolean = false;
-  user: User = new User();
+  authFailed: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -27,14 +24,15 @@ export class LoginComponent {
   ) {}
 
   sendUserData() {
-    this.user.email = this.email;
-    this.user.password = this.password;
     this.authService
-      .signIn(this.user.email, this.user.password)
+      .signIn(this.email, this.password)
       .forEach((response) => {
         if (response) {
           this.router.navigateByUrl('/');
         }
+      })
+      .catch((_) => {
+        this.authFailed = true;
       });
   }
 }

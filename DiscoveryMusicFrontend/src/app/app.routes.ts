@@ -6,12 +6,12 @@ import { AlbumComponent } from './album/album.component';
 
 export const routes: Routes = [
   {
-    path: 'register',
+    path: 'new',
     component: RegisterComponent,
     pathMatch: 'full',
   },
   {
-    path: 'login',
+    path: 'signin',
     component: LoginComponent,
     pathMatch: 'full',
   },

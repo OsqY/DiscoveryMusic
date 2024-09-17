@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../../environments/environment.development';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Comment } from './Comment';
 import { SharedModule } from '../../shared-module';
 import { AuthService } from '../identity/service';
 
@@ -14,7 +12,6 @@ import { AuthService } from '../identity/service';
   styleUrl: './comment-form.component.scss',
 })
 export class CommentFormComponent implements OnInit {
-  url: string = environment.baseUrl;
   content: string = '';
   rating: number = 0;
   albumId: string = '';
@@ -29,15 +26,15 @@ export class CommentFormComponent implements OnInit {
 
   ngOnInit() {
     this.getParam();
-    this.authService.isSignedIn().forEach((signedIn: boolean) => {
-      this.isSignedIn = signedIn;
+    this.authService.onStateChanged().forEach((state: boolean) => {
+      this.isSignedIn = state;
     });
   }
 
   sendData() {
     this.http
       .post<string>(
-        this.url + '/api/Comment/CreateComment',
+        '/api/Comment/CreateComment',
         { content: this.content, rating: this.rating, albumId: this.albumId },
         {
           withCredentials: true,
