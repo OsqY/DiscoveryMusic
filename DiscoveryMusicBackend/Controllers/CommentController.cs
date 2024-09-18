@@ -51,6 +51,29 @@ public class CommentController : ControllerBase
     }
 
     [Authorize]
+    [HttpGet("{albumId}")]
+    public async Task<ActionResult<Comment>> GetCommentFromAlbumId(int albumId)
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        var comment = await _context
+            .Comments.Where(c => c.UserId == user.Id && c.AlbumId == albumId)
+            .Select(c => new CommentDTO
+            {
+                Id = c.Id,
+                AlbumId = c.AlbumId,
+                Content = c.Content,
+                Username = c.User.UserName,
+                UserId = c.UserId,
+            })
+            .FirstOrDefaultAsync();
+
+        return comment != null
+            ? Ok(comment)
+            : NotFound($"Comment with albumId: {albumId} was not found.");
+    }
+
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<Comment>> CreateComment(CommentDTO model)
     {
@@ -61,6 +84,11 @@ public class CommentController : ControllerBase
 
         if (!ModelState.IsValid)
             return BadRequest();
+
+        var previousComment = await _context.Comments.Where(c => c.AlbumId == model.AlbumId && c.UserId == user.Id).FirstOrDefaultAsync();
+
+        if (previousComment != null)
+          return BadRequest($"You already made a comment to album with id: {model.AlbumId}");
 
         Comment comment = new Comment
         {

@@ -12,12 +12,13 @@ import {
   of,
   Subject,
 } from 'rxjs';
-import { UserInfo } from './dto';
-import { userInfo } from 'os';
+import { Role, UserInfo } from './dto';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(private http: HttpClient) {}
+
+  private _roleChanged: Subject<boolean> = new BehaviorSubject<boolean>(false);
 
   private _authStateChanged: Subject<boolean> = new BehaviorSubject<boolean>(
     false,
@@ -25,6 +26,10 @@ export class AuthService {
 
   public onStateChanged() {
     return this._authStateChanged.asObservable();
+  }
+
+  public onRoleChanged() {
+    return this._roleChanged.asObservable();
   }
 
   public signIn(email: string, password: string) {
@@ -113,6 +118,32 @@ export class AuthService {
       }),
       catchError(() => {
         this._authStateChanged.next(false);
+        return of(false);
+      }),
+    );
+  }
+
+  public role() {
+    return this.http.get<Role>('/api/User/GetRole', {
+      withCredentials: true,
+      observe: 'response',
+    });
+  }
+
+  public isAdmin(): Observable<boolean> {
+    return this.role().pipe(
+      map((response) => {
+        const role = response.body;
+        if (role?.role === 'Admin') {
+          console.log('aaa');
+          this._roleChanged.next(true);
+          return true;
+        }
+        this._roleChanged.next(false);
+        return false;
+      }),
+      catchError(() => {
+        this._roleChanged.next(false);
         return of(false);
       }),
     );

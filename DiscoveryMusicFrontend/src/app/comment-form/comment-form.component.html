@@ -108,11 +108,20 @@
       class="input input-bordered textarea-lg input-lg w-full mb-6 text-lg"
     >
     </textarea>
-    <button
-      (click)="sendData()"
-      class="btn btn-primary btn-lg w-full text-lg text-white"
-    >
-      Submit
-    </button>
+    @if (isEdit) {
+      <button
+        (click)="handleUpdate()"
+        class="btn btn-primary btn-lg w-full text-lg text-white"
+      >
+        Update
+      </button>
+    } @else {
+      <button
+        (click)="sendData()"
+        class="btn btn-primary btn-lg w-full text-lg text-white"
+      >
+        Submit
+      </button>
+    }
   </div>
 </div>

@@ -277,5 +277,5 @@
 /home/oscar/Escritorio/DiscoveryMusic/DiscoveryMusicBackend/obj/Debug/net8.0/scopedcss/bundle/DiscoveryMusicBackend.styles.css
 /home/oscar/Escritorio/DiscoveryMusic/DiscoveryMusicBackend/obj/Debug/net8.0/DiscoveryMusicBackend.genruntimeconfig.cache
 /home/oscar/Escritorio/DiscoveryMusic/DiscoveryMusicBackend/obj/Debug/net8.0/ref/DiscoveryMusicBackend.dll
-/home/oscar/Escritorio/DiscoveryMusic/DiscoveryMusicBackend/obj/Debug/net8.0/Discover.742DE71C.Up2Date
 /home/oscar/Escritorio/DiscoveryMusic/DiscoveryMusicBackend/bin/Debug/net8.0/CsvHelper.dll
+/home/oscar/Escritorio/DiscoveryMusic/DiscoveryMusicBackend/obj/Debug/net8.0/DiscoveryMusicBackend.csproj.CopyComplete

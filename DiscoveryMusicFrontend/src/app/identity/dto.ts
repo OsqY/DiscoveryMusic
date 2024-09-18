@@ -7,3 +7,8 @@ export interface UserInfo {
   email: string;
   isEmailConfirmed: boolean;
 }
+
+export interface Role {
+  $id: string;
+  role: string;
+}

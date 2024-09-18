@@ -11,6 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class NavBarComponent implements OnInit {
   isSignedIn: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -20,6 +21,9 @@ export class NavBarComponent implements OnInit {
   ngOnInit() {
     this.authService.onStateChanged().forEach((state: boolean) => {
       this.isSignedIn = state;
+    });
+    this.authService.onRoleChanged().forEach((state: boolean) => {
+      this.isAdmin = state;
     });
   }
 

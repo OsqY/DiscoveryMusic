@@ -1,8 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SharedModule } from '../../shared-module';
 import { AuthService } from '../identity/service';
+import { UserComment } from '../album/AlbumResponse';
 
 @Component({
   selector: 'app-comment-form',
@@ -11,11 +18,13 @@ import { AuthService } from '../identity/service';
   templateUrl: './comment-form.component.html',
   styleUrl: './comment-form.component.scss',
 })
-export class CommentFormComponent implements OnInit {
+export class CommentFormComponent implements OnInit, OnChanges {
+  @Input() userComment!: UserComment;
   content: string = '';
   rating: number = 0;
   albumId: string = '';
   isSignedIn: boolean = false;
+  isEdit: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -29,6 +38,12 @@ export class CommentFormComponent implements OnInit {
     this.authService.onStateChanged().forEach((state: boolean) => {
       this.isSignedIn = state;
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['userComment'] && changes['userComment'].currentValue) {
+      this.handleEdit();
+    }
   }
 
   sendData() {
@@ -56,5 +71,29 @@ export class CommentFormComponent implements OnInit {
 
   updateRating(newRating: number) {
     this.rating = newRating;
+  }
+
+  handleEdit() {
+    this.isEdit = true;
+    this.content = this.userComment!.content;
+    this.rating = this.userComment!.rating;
+  }
+
+  handleUpdate() {
+    if (this.userComment) {
+      this.updateComment(this.userComment.id.toString());
+    }
+  }
+
+  updateComment(commentId: string) {
+    this.http
+      .put(`/api/Comment/UpdateComment/${commentId}`, {
+        content: this.content,
+        rating: this.rating,
+      })
+      .subscribe({
+        next: (result) => {},
+        error: (error) => console.error(error),
+      });
   }
 }

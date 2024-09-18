@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AlbumResponse, Comment } from './AlbumResponse';
+import { AlbumResponse, Comment, UserComment } from './AlbumResponse';
 import { ActivatedRoute } from '@angular/router';
 import { CommentFormComponent } from '../comment-form/comment-form.component';
 import { AuthService } from '../identity/service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-album',
   standalone: true,
-  imports: [CommentFormComponent],
+  imports: [CommentFormComponent, FormsModule],
   templateUrl: './album.component.html',
   styleUrl: './album.component.scss',
 })
@@ -16,7 +17,10 @@ export class AlbumComponent implements OnInit {
   public result!: AlbumResponse;
   id: string = '';
   isSignedIn: boolean = false;
-  public userComment: Comment | null = null;
+  public userComment!: UserComment;
+  isEdit: boolean = false;
+  content: string = '';
+  rating: number = 0;
 
   constructor(
     private http: HttpClient,
@@ -62,8 +66,16 @@ export class AlbumComponent implements OnInit {
           if (result.status === 200) {
             this.userComment = result.body!;
           }
+          this.isEdit = true;
         },
         error: (error) => console.error(error),
       });
+  }
+
+  handleDelete(commentId: string) {
+    this.http.delete(`/api/Comment/DeleteComment/${commentId}`).subscribe({
+      next: (result) => {},
+      error: (error) => console.error(error),
+    });
   }
 }

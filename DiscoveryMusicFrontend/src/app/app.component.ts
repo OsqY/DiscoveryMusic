@@ -13,12 +13,16 @@ import { AuthService } from './identity/service';
 export class AppComponent implements OnInit {
   title = 'DiscoveryMusicFrontend';
   isSignedIn: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.authService.isSignedIn().subscribe((state: boolean) => {
       this.isSignedIn = state;
+    });
+    this.authService.isAdmin().subscribe((state: boolean) => {
+      this.isAdmin = state;
     });
   }
 }

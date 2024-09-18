@@ -26,10 +26,9 @@ export class HomeComponent implements OnInit {
   }
 
   getData(page: number) {
-    var url = environment.baseUrl;
     this.http
       .get<PaginatedAlbumsResponse>(
-        url + `/api/Album/GetAlbums?pageSize=40&pageIndex=${page}`,
+        `/api/Album/GetAlbums?pageSize=40&pageIndex=${page}`,
       )
       .subscribe({
         next: (result) => {
