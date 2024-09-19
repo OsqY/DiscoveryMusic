@@ -48,6 +48,10 @@ export class AuthService {
       .pipe<boolean>(
         map((res: HttpResponse<string>) => {
           this._authStateChanged.next(res.ok);
+          this.isAdmin().forEach((state) => {
+            this._roleChanged.next(state);
+          });
+
           return res.ok;
         }),
       );
@@ -91,6 +95,7 @@ export class AuthService {
         map((res: HttpResponse<string>) => {
           if (res.ok) {
             this._authStateChanged.next(false);
+            this._roleChanged.next(false);
           }
           return res.ok;
         }),
@@ -124,23 +129,23 @@ export class AuthService {
   }
 
   public role() {
-    return this.http.get<Role>('/api/User/GetRole', {
-      withCredentials: true,
-      observe: 'response',
-    });
+    return this.http
+      .get<Role>('/api/User/GetRole', {
+        withCredentials: true,
+      })
+      .pipe(
+        catchError((_: HttpErrorResponse, __: Observable<Role>) => {
+          return of({} as Role);
+        }),
+      );
   }
 
   public isAdmin(): Observable<boolean> {
     return this.role().pipe(
       map((response) => {
-        const role = response.body;
-        if (role?.role === 'Admin') {
-          console.log('aaa');
-          this._roleChanged.next(true);
-          return true;
-        }
-        this._roleChanged.next(false);
-        return false;
+        const admin = response.role === 'Admin' ? true : false;
+        this._roleChanged.next(admin);
+        return admin;
       }),
       catchError(() => {
         this._roleChanged.next(false);

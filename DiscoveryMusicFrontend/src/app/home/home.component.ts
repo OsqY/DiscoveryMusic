@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../../environments/environment.development';
 import { PaginatedAlbumsResponse } from './ApiResponse';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../identity/service';
 
 @Component({
   selector: 'app-home',
@@ -18,11 +18,20 @@ export class HomeComponent implements OnInit {
   public currentPage: number = 0;
   public pagesToShow: number[] = [];
   public maxVisiblePages: number = 4;
+  isAdmin: boolean = false;
+  deleteSuccess: boolean = false;
+  albumId: string | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   ngOnInit() {
     this.getData(this.currentPage);
+    this.authService.isAdmin().forEach((state: boolean) => {
+      this.isAdmin = state;
+    });
   }
 
   getData(page: number) {
@@ -68,5 +77,42 @@ export class HomeComponent implements OnInit {
       this.currentPage = page;
       this.getData(page);
     }
+  }
+
+  openDeleteModal(albumId: string) {
+    this.albumId = albumId;
+    const deleteModal: HTMLDialogElement | null =
+      document.querySelector('#deleteModal');
+    if (deleteModal) {
+      deleteModal.showModal();
+    }
+  }
+
+  confirmDelete() {
+    if (this.albumId) {
+      this.handleDelete(this.albumId);
+      this.albumId = null;
+      const deleteModal: HTMLDialogElement | null =
+        document.querySelector('#deleteModal');
+      if (deleteModal) {
+        deleteModal.close();
+      }
+    }
+  }
+
+  handleDelete(id: string) {
+    this.http
+      .delete(`/api/Album/DeleteAlbum/${id}`, {
+        withCredentials: true,
+        observe: 'response',
+      })
+      .subscribe({
+        next: (result) => {
+          this.deleteSuccess = result.ok;
+        },
+        error: () => {
+          this.deleteSuccess = false;
+        },
+      });
   }
 }

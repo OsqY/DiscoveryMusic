@@ -1,1 +1,66 @@
-<p>album-form works!</p>
+<div class="card bg-base-300 shadow-xl w-full">
+  <div class="card-body">
+    <input
+      [(ngModel)]="name"
+      type="text"
+      placeholder="Album name"
+      class="input input-bordered textarea-lg input-lg w-full mb-6 text-lg"
+    />
+
+    <input
+      [(ngModel)]="releaseDate"
+      type="date"
+      placeholder="Release Date"
+      class="input input-bordered textarea-lg input-lg w-full mb-6 text-lg"
+    />
+
+    <select [(ngModel)]="artistId" class="select select-bordered w-full mb-6">
+      @for (artist of artists; track artist) {
+        <option [value]="artist.artistId">
+          {{ artist.name }}
+        </option>
+      }
+    </select>
+
+    @for (song of songs; track song; let idx = $index) {
+      <div class="mb-4">
+        <input
+          [(ngModel)]="song.name"
+          type="text"
+          placeholder="Song name"
+          class="input input-bordered textarea-lg input-lg w-full mb-2"
+        />
+        <input
+          [(ngModel)]="song.releaseDate"
+          type="date"
+          placeholder="Release Date"
+          class="input input-bordered textarea-lg input-lg w-full mb-6 text-lg"
+        />
+
+        <button class="btn btn-error btn-xs" (click)="removeSong(idx)">
+          Delete
+        </button>
+      </div>
+    }
+
+    <button class="btn btn-secondary w-full mb-4" (click)="addSong()">
+      Add Song
+    </button>
+
+    @if (isEdit) {
+      <button
+        (click)="updateAlbum()"
+        class="btn btn-primary btn-lg w-full text-lg text-white"
+      >
+        Update
+      </button>
+    } @else {
+      <button
+        (click)="sendData()"
+        class="btn btn-primary btn-lg w-full text-lg text-white"
+      >
+        Create
+      </button>
+    }
+  </div>
+</div>
