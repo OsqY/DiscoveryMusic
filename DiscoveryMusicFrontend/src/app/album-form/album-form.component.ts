@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Album, Artist, Artists, Song } from './Album';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -60,7 +54,9 @@ export class AlbumFormComponent implements OnInit {
   getParam() {
     this.route.paramMap.subscribe((params) => {
       this.albumId = params.get('id') ?? '';
-      this.getAlbum(this.albumId);
+      if (this.albumId !== '') {
+        this.getAlbum(this.albumId);
+      }
     });
   }
 

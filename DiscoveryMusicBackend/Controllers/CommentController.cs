@@ -85,10 +85,12 @@ public class CommentController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest();
 
-        var previousComment = await _context.Comments.Where(c => c.AlbumId == model.AlbumId && c.UserId == user.Id).FirstOrDefaultAsync();
+        var previousComment = await _context
+            .Comments.Where(c => c.AlbumId == model.AlbumId && c.UserId == user.Id)
+            .FirstOrDefaultAsync();
 
         if (previousComment != null)
-          return BadRequest($"You already made a comment to album with id: {model.AlbumId}");
+            return BadRequest($"You already made a comment to album with id: {model.AlbumId}");
 
         Comment comment = new Comment
         {

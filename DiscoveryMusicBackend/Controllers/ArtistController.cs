@@ -24,7 +24,10 @@ public class ArtistController : ControllerBase
     )
     {
         return await ApiResultDTO<ArtistDTO>.CreateAsync(
-            _context.Artists.Select(a => new ArtistDTO{Name=a.Name, ArtistId=a.Id}).AsNoTracking().AsQueryable(),
+            _context
+                .Artists.Select(a => new ArtistDTO { Name = a.Name, ArtistId = a.Id })
+                .AsNoTracking()
+                .AsQueryable(),
             paginationDTO
         );
     }
@@ -45,6 +48,17 @@ public class ArtistController : ControllerBase
                     ReleaseDate = a.ReleaseDate,
                 }),
             })
+            .FirstOrDefaultAsync();
+
+        return artist != null ? Ok(artist) : NotFound();
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Artist>> GetArtistInfo(int id)
+    {
+        var artist = await _context
+            .Artists.Where(a => a.Id == id)
+            .Select(a => new ArtistDTO { ArtistId = a.Id, Name = a.Name })
             .FirstOrDefaultAsync();
 
         return artist != null ? Ok(artist) : NotFound();

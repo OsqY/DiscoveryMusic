@@ -1,0 +1,92 @@
+<article class="prose">
+  <h1>Artists</h1>
+</article>
+
+@for (artist of artistsResponse.data.$values; track artist) {
+  <div class="card card-side bg-primary-content shadow-xl m-5">
+    <figure>
+      <img
+        src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+        alt="Movie"
+      />
+    </figure>
+    <div class="card-body">
+      <h2 class="card-title text-primary">
+        <a [routerLink]="'/artist/' + artist.artistId">{{ artist.name }} </a>
+      </h2>
+      <p>{{ artist.debut.replace("T00:00:00", "") }}</p>
+      <div class="card-actions justify-end">
+        @if (isAdmin) {
+          <button
+            class="btn btn-error btn-square"
+            (click)="openDeleteModal(artist.artistId.toString())"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-wartistIdth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+
+          <button
+            class="btn btn-info"
+            [routerLink]="'/edit-artist/' + artist.artistId"
+          >
+            Edit
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+}
+
+<div class="join">
+  <button
+    class="join-item btn btn-square"
+    [disabled]="currentPage === 0"
+    (click)="goToPage(currentPage - 1)"
+  >
+    &laquo;
+  </button>
+
+  <ng-container *ngFor="let page of pagesToShow">
+    <input
+      *ngIf="page !== -1"
+      class="join-item btn btn-square"
+      type="radio"
+      [name]="'page_' + page"
+      [ariaLabel]="currentPage === page"
+      (click)="goToPage(page)"
+    />
+    <span *ngIf="page === -1" class="join-iten btn">...</span>
+  </ng-container>
+
+  <button
+    class="join-item btn btn-square"
+    [disabled]="currentPage === artistsResponse.totalPages"
+    (click)="goToPage(currentPage + 1)"
+  >
+    &raquo;
+  </button>
+</div>
+
+<dialog id="deleteModal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">
+      Are you sure you want to delete this album?
+    </h3>
+    <div class="modal-action">
+      <button class="btn btn-error" (click)="confirmDelete()">Delete</button>
+      <button class="btn" onclick="deleteModal.close()">Cancel</button>
+    </div>
+  </div>
+</dialog>

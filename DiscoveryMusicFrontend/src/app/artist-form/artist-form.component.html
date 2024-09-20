@@ -1,1 +1,33 @@
-<p>artist-form works!</p>
+<div class="card bg-base-300 shadow-xl w-full">
+  <div class="card-body">
+    <input
+      [(ngModel)]="name"
+      type="text"
+      placeholder="Arrtist name"
+      class="input input-bordered textarea-lg input-lg w-full mb-6 text-lg"
+    />
+
+    <input
+      [(ngModel)]="debut"
+      type="date"
+      placeholder="Debut Date"
+      class="input input-bordered textarea-lg input-lg w-full mb-6 text-lg"
+    />
+
+    @if (isEdit) {
+      <button
+        (click)="updateArtist()"
+        class="btn btn-primary btn-lg w-full text-lg text-white"
+      >
+        Update
+      </button>
+    } @else {
+      <button
+        (click)="sendData()"
+        class="btn btn-primary btn-lg w-full text-lg text-white"
+      >
+        Create
+      </button>
+    }
+  </div>
+</div>

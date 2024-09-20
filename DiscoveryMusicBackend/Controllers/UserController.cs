@@ -1,4 +1,3 @@
-
 using DiscoveryMusic.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -8,26 +7,26 @@ namespace DiscoveryMusic.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class UserController : ControllerBase{
+public class UserController : ControllerBase
+{
+    private readonly UserManager<ApiUser> _userManager;
 
-  private readonly UserManager<ApiUser> _userManager;
+    public UserController(UserManager<ApiUser> userManager)
+    {
+        _userManager = userManager;
+    }
 
-  public UserController(UserManager<ApiUser> userManager) {
-    _userManager=userManager;
-  }
-
-  [Authorize]
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult> GetRole()
     {
-      var user= await _userManager.GetUserAsync(User);
-      var roles = await _userManager.GetRolesAsync(user);
+        var user = await _userManager.GetUserAsync(User);
+        var roles = await _userManager.GetRolesAsync(user);
 
-      if(roles.Any(l => l == "Administrator")) {
-        return Ok(new {Role="Admin"});
-      }
-      return Unauthorized(new {Role="User"});
-
+        if (roles.Any(l => l == "Administrator"))
+        {
+            return Ok(new { Role = "Admin" });
+        }
+        return Unauthorized(new { Role = "User" });
     }
-
 }

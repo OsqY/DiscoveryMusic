@@ -7,6 +7,7 @@ import { AlbumFormComponent } from './album-form/album-form.component';
 import { AdminGuard } from './identity/admin-guard';
 import { ArtistFormComponent } from './artist-form/artist-form.component';
 import { SongFormComponent } from './song-form/song-form.component';
+import { ArtistsComponent } from './artists/artists.component';
 
 export const routes: Routes = [
   {
@@ -52,6 +53,10 @@ export const routes: Routes = [
   {
     path: 'album/:id',
     component: AlbumComponent,
+  },
+  {
+    path: 'artists',
+    component: ArtistsComponent,
   },
   {
     path: '',
